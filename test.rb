@@ -42,20 +42,29 @@ end
 class Chart
 	def initialize
 		@array = Array.new
+		@max_value = 0
 	end
 
 	def add_point(x, y)
-		@array.push([x, y])
+		@array[x] = y
+		@max_value = y if y > @max_value
 	end
 
 	def print
-		@array.each do |x|
-			puts x[0].to_s + ", " + x[1].to_s
+		@array.each_with_index do |value, i|
+			puts i.to_s + ", " + @value.to_s
 		end
 	end
 
-	private def exportPoints(svg)
-		svg.addPath(@array, false)
+	private def exportPoints(svg, w, h)
+		points = Array.new
+		piece = w / (@array.length - 1).to_f
+		h_piece = h / @max_value.to_f;
+
+		@array.each_with_index do |value, i|
+			points.push([i * piece, h - value * h_piece])
+		end
+		svg.addPath(points, false)
 	end
 
 	def export
@@ -65,13 +74,15 @@ class Chart
 		svg.addRect(1, 1, 98, 78)
 
 		svg.setStroke("#729fcf")
-		exportPoints(svg)
+		exportPoints(svg, 98, 78)
 		svg.close
 	end
 end
 
 chart = Chart.new
-chart.add_point(1, 2)
-chart.add_point(8, 3)
+chart.add_point(0, 8)
+chart.add_point(1, 3)
+chart.add_point(2, 4)
+chart.add_point(3, 1)
 chart.print
 chart.export
