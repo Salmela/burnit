@@ -56,22 +56,45 @@ class Chart
 		end
 	end
 
+	private def w_piece(w)
+		w / (@array.length - 1).to_f
+	end
+
+	private def h_piece(h)
+		h / @max_value.to_f;
+	end
+
 	private def exportPoints(svg, w, h)
 		points = Array.new
-		piece = w / (@array.length - 1).to_f
-		h_piece = h / @max_value.to_f;
 
 		@array.each_with_index do |value, i|
-			points.push([i * piece, h - value * h_piece])
+			points.push([i * w_piece(w), h - value * h_piece(h)])
 		end
 		svg.addPath(points, false)
+	end
+
+	private def exportFrame(svg, w, h)
+		points = Array.new()
+
+		(1..(@max_value - 1)).each do |i|
+			points[0] = [1, h_piece(h) * i]
+			points[1] = [w - 1, h_piece(h) * i]
+			svg.addPath(points, false)
+		end
+
+		(1..(@array.length - 2)).each do |i|
+			points[0] = [w_piece(w) * i, 1]
+			points[1] = [w_piece(w) * i, h - 1]
+			svg.addPath(points, false)
+		end
 	end
 
 	def export
 		svg = SvgBuilder.new("test.svg", 100, 80)
 		svg.setFill("none")
-		svg.setStroke("#73d216")
-		svg.addRect(1, 1, 98, 78)
+
+		svg.setStroke("#d8d8d8")
+		exportFrame(svg, 98, 78)
 
 		svg.setStroke("#729fcf")
 		exportPoints(svg, 98, 78)
@@ -84,5 +107,5 @@ chart.add_point(0, 8)
 chart.add_point(1, 3)
 chart.add_point(2, 4)
 chart.add_point(3, 1)
-chart.print
+chart.add_point(4, 0)
 chart.export
