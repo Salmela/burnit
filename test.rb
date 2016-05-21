@@ -1,4 +1,6 @@
 require "net/http"
+require "json"
+require "date"
 
 class SvgBuilder
 	def initialize(filename, w, h)
@@ -108,6 +110,45 @@ class Chart
 		svg.close
 	end
 end
+
+class GithubApi
+	@@instance = GithubApi.new
+
+	def self.load(uri, limit = 3)
+		raise ArgumentError, 'Too many HTTP redirects' if limit == 0
+		raise 'We are rate limited' if @wait_until != nil
+
+		response = Net::HTTP.get_response(uri)
+
+		puts "limit: " + response["X-RateLimit-Limit"]
+		puts "remaining: " + response["X-RateLimit-Remaining"]
+		puts "reset: " + response["X-RateLimit-Reset"]
+
+		case response
+		when Net::HTTPSuccess
+			return JSON.parse(response.body)
+		when Net::HTTPRedirection
+			return load(URI(response['location']), limit - 1)
+		#TODO log the messages here
+		when Net::HTTPForbidden
+			if response["X-RateLimit-Remaining"] == 0
+				reset_time = response["X-RateLimit-Reset"]
+				@wait_until = Time.at(reset_time).to_datetime
+			end
+		end
+	end
+end
+
+class GithubIssueFetcher
+	def initialize
+		uri = URI('https://api.github.com/repos/octocat/hello-world/issues')
+		issues = GithubApi.load(uri)
+		puts "body: " + issues.to_s
+	end
+
+end
+
+fetcher = GithubIssueFetcher.new
 
 chart = Chart.new
 chart.add_point(0, 8)
