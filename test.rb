@@ -160,13 +160,32 @@ class GithubApi
 	end
 end
 
+class GithubIssue
+	def initialize(json)
+		@url = json['url']
+		@title = json['title']
+		@number = json['number']
+		@labels = json['labels']
+	end
+
+	def to_s()
+		"#{@number}: #{@title}, #{@labels}"
+	end
+end
+
 class GithubIssueFetcher
 	def initialize(github_api)
 		uri = URI("https://api.github.com/repos/#{github_api.user}/#{github_api.repo}/issues")
-		issues = github_api.load(uri)
-		puts "body: " + issues.to_s
-	end
+		json_issues = github_api.load(uri)
+		#puts "body: " + issues.to_s
+		puts "length: " + json_issues.length.to_s
 
+		@issues = Array.new
+		json_issues.each do |json_issue|
+			@issues.push(GithubIssue.new(json_issue))
+		end
+		puts @issues
+	end
 end
 
 api = GithubApi.new("octocat", "hello-world")
