@@ -121,13 +121,22 @@ class GithubApi
 	def initialize(user, repo)
 		@user = user
 		@repo = repo
+
+		startSession
+	end
+
+	def startSession()
+		@http = Net::HTTP.new("api.github.com", 443)
+		@http.use_ssl = true
 	end
 
 	def load(uri, limit = 3)
 		raise ArgumentError, 'Too many HTTP redirects' if limit == 0
 		raise 'We are rate limited' if $wait_until != nil
 
-		response = Net::HTTP.get_response(uri)
+		req = Net::HTTP::Get.new(uri.request_uri)
+		req["User-Agent"] = "sprint-burndown-app-salmela"
+		response = @http.request(req)
 
 		puts "limit: " + response["X-RateLimit-Limit"]
 		puts "remaining: " + response["X-RateLimit-Remaining"]
