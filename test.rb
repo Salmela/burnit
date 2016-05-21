@@ -41,21 +41,21 @@ end
 
 class Chart
 	def initialize
-		@array = Array.new
+		@data = Array.new
 		@max_value = 0
 		@width = 0
 	end
 
 	def add_point(x, y)
-		insert_at = @array.index{|p| p[0] > x}
-		@array.insert(insert_at.to_i, [x, y])
+		insert_at = @data.index{|p| p[0] > x}
+		@data.insert(insert_at.to_i, [x, y])
 
 		@width = x if x > @width
 		@max_value = y if y > @max_value
 	end
 
 	def print
-		@array.each do |point|
+		@data.each do |point|
 			puts point[0].to_s + ", " + point[1].to_s
 		end
 	end
@@ -71,7 +71,7 @@ class Chart
 	private def exportPoints(svg, w, h)
 		points = Array.new
 
-		@array.each_with_index do |point|
+		@data.each_with_index do |point|
 			points.push([point[0] * w_piece(w),
 			             h - point[1] * h_piece(h)])
 		end
