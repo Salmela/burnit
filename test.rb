@@ -111,12 +111,21 @@ class Chart
 	end
 end
 
+#TODO the rate-limit is user specific as far as know
+$wait_until = nil
+
 class GithubApi
 	@@instance = GithubApi.new
+	attr_reader :user, :repo
 
-	def self.load(uri, limit = 3)
+	def initialize(user, repo)
+		@user = user
+		@repo = repo
+	end
+
+	def load(uri, limit = 3)
 		raise ArgumentError, 'Too many HTTP redirects' if limit == 0
-		raise 'We are rate limited' if @wait_until != nil
+		raise 'We are rate limited' if $wait_until != nil
 
 		response = Net::HTTP.get_response(uri)
 
@@ -131,24 +140,28 @@ class GithubApi
 			return load(URI(response['location']), limit - 1)
 		#TODO log the messages here
 		when Net::HTTPForbidden
-			if response["X-RateLimit-Remaining"] == 0
+			if response["X-RateLimit-Remaining"].to_i == 0
 				reset_time = response["X-RateLimit-Reset"]
-				@wait_until = Time.at(reset_time).to_datetime
+				$wait_until = Time.at(reset_time).to_datetime
+				raise 'We are rate limited'
+			else
+				raise 'Http request was forbidden'
 			end
 		end
 	end
 end
 
 class GithubIssueFetcher
-	def initialize
-		uri = URI('https://api.github.com/repos/octocat/hello-world/issues')
-		issues = GithubApi.load(uri)
+	def initialize(github_api)
+		uri = URI("https://api.github.com/repos/#{github_api.user}/#{github_api.repo}/issues")
+		issues = github_api.load(uri)
 		puts "body: " + issues.to_s
 	end
 
 end
 
-fetcher = GithubIssueFetcher.new
+api = GithubApi.new("octocat", "hello-world")
+fetcher = GithubIssueFetcher.new(api)
 
 chart = Chart.new
 chart.add_point(0, 8)
