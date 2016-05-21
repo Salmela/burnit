@@ -8,6 +8,14 @@ class SvgBuilder
 		@file.puts "<svg>"
 	end
 
+	def setFill(color)
+		@fill = color
+	end
+
+	def setStroke(color)
+		@stroke = color
+	end
+
 	def addRect(x, y, w, h)
 		@file.puts "<rect x=\"#{x}\" y=\"#{y}\" width=\"#{w}\" height=\"#{h}\" />"
 	end
@@ -34,6 +42,8 @@ class Chart
 
 	def export
 		svg = SvgBuilder.new("test.svg", 100, 80)
+		svg.setFill("none")
+		svg.setStroke("#73d216")
 		svg.addRect(1, 1, 98, 78)
 		svg.close
 	end
