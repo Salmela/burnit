@@ -43,21 +43,25 @@ class Chart
 	def initialize
 		@array = Array.new
 		@max_value = 0
+		@width = 0
 	end
 
 	def add_point(x, y)
-		@array[x] = y
+		insert_at = @array.index{|p| p[0] > x}
+		@array.insert(insert_at.to_i, [x, y])
+
+		@width = x if x > @width
 		@max_value = y if y > @max_value
 	end
 
 	def print
-		@array.each_with_index do |value, i|
-			puts i.to_s + ", " + @value.to_s
+		@array.each do |point|
+			puts point[0].to_s + ", " + point[1].to_s
 		end
 	end
 
 	private def w_piece(w)
-		w / (@array.length - 1).to_f
+		w / @width.to_f
 	end
 
 	private def h_piece(h)
@@ -67,8 +71,9 @@ class Chart
 	private def exportPoints(svg, w, h)
 		points = Array.new
 
-		@array.each_with_index do |value, i|
-			points.push([i * w_piece(w), h - value * h_piece(h)])
+		@array.each_with_index do |point|
+			points.push([point[0] * w_piece(w),
+			             h - point[1] * h_piece(h)])
 		end
 		svg.addPath(points, false)
 	end
@@ -77,14 +82,16 @@ class Chart
 		points = Array.new()
 
 		(1..(@max_value - 1)).each do |i|
-			points[0] = [1, h_piece(h) * i]
-			points[1] = [w - 1, h_piece(h) * i]
+			y = h_piece(h) * i
+			points[0] = [1, y]
+			points[1] = [w - 1, y]
 			svg.addPath(points, false)
 		end
 
-		(1..(@array.length - 2)).each do |i|
-			points[0] = [w_piece(w) * i, 1]
-			points[1] = [w_piece(w) * i, h - 1]
+		(1..(@width - 1)).each do |i|
+			x = w_piece(w) * i
+			points[0] = [x, 1]
+			points[1] = [x, h - 1]
 			svg.addPath(points, false)
 		end
 	end
@@ -104,6 +111,7 @@ end
 
 chart = Chart.new
 chart.add_point(0, 8)
+chart.add_point(0.5, 7)
 chart.add_point(1, 3)
 chart.add_point(2, 4)
 chart.add_point(3, 1)
