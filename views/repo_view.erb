@@ -2,12 +2,14 @@
 
 <h3>Tasks</h3>
 <ol class="list task-list">
-<% tasks.each do |task| %>
+<% issues.each do |task| %>
 <li>
 	<a href="<%= task.url %>" class="item">
 	<span class="name"><%= task.name %></span>
 	<span class="no-css"> - </span>
+<% if task.size %>
 	<span class="size"><%= task.size %></span>
+<% end %>
 	<span class="clearfix"></span>
 	</a>
 </li>
@@ -16,11 +18,15 @@
 
 <h3>User stories</h3>
 <table>
+<% user_stories.each do |story| %>
+<% story.tasks.each_with_index do |tasks, index| %>
 <tr>
-	<td rowspan="2">Story #1</td>
-	<td>task1</td>
-	<td>done</td>
-	<td>somebody</td>
+<% if index == 0 %>
+	<td rowspan="<%= story.tasks.length %>"><%= story.name %></td>
+<% end %>
+	<td><%= story.name %></td>
+	<td><%= story.state %></td>
+	<td><%= story.owner %></td>
 	<td>2</td>
 	<td>2</td>
 	<td>2</td>
@@ -29,6 +35,15 @@
 	<td>0</td>
 	<td>0</td>
 </tr>
+<% end %>
+<tr>
+<% if story.tasks.length == 0 %>
+	<td><%= story.name %></td>
+	<td colspan="9">No tasks at this user story.</td>
+</tr>
+<% end %>
+<% end %>
+<!--
 <tr>
 	<td>task2</td>
 	<td>done</td>
@@ -41,6 +56,7 @@
 	<td>1</td>
 	<td>0</td>
 </tr>
+-->
 </table>
 
 <h3>Burndown chart</h3>
