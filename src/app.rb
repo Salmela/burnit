@@ -41,6 +41,7 @@ class App < Sinatra::Base
 
 	# this should be generated per milestone not by repo
 	get '/:user/:repo/burndown.svg' do
+		content_type("image/svg+xml")
 		create_repo_burndown_svg
 	end
 

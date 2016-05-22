@@ -4,7 +4,15 @@ require_relative 'test.rb'
 module Repo
 	# this should be generated per milestone not by repo
 	def create_repo_burndown_svg
-		content_type("image/svg+xml")
+		chart = Chart.new
+		chart.add_point(0, 8)
+		chart.add_point(0.5, 7)
+		chart.add_point(1, 3)
+		chart.add_point(2, 4)
+		chart.add_point(3, 1)
+		chart.add_point(4, 0)
+
+		return chart.svg_buffer
 	end
 
 	def create_repo_page
