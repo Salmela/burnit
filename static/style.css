@@ -13,6 +13,7 @@ html, body {
 
 .clearfix {
 	clear: both;
+	display: block;
 }
 
 /* heh */
@@ -118,18 +119,37 @@ ol.list li:last-child {
 }
 
 ol.list a.item {
+	font-weight: bold;
 	color: #080808;
 	display: block;
 	padding: 8px;
 	text-decoration: none;
 }
 
-ol.list .name {
+ol.user-list .name {
 	display: inline-block;
 	width: 20%;
-	font-weight: bold;
 }
 
-ol.list .desc {
+ol.user-list .desc {
 	color: #444;
+	font-weight: normal;
+}
+
+ol.task-list .size {
+	float: right;
+	display: inline-block;
+	padding: 5px;
+	margin: -5px;
+	position: relative;
+	width: 1.2em;
+	height: 1.2em;
+	text-align: center;
+	font-weight: normal;
+	background: #f79494;
+	border-radius: 100%;
+}
+
+ol.task-list .size:hover {
+	background: #f55959;
 }
