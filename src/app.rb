@@ -19,7 +19,7 @@ class App < Sinatra::Base
 
 	get '/' do
 		search_query = params['search']
-		if search_query
+		if search_query and search_query.length > 0
 			search(search_query)
 		end
 		erb :index_view
