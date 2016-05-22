@@ -8,6 +8,7 @@ class SvgBuilder
 		@w = w
 		@h = h
 		@buffer = ''
+		@stroke_width = 1
 		append "<svg xmlns=\"http://www.w3.org/2000/svg\" " +
 			"width=\"#{w}\" height=\"#{h}\">"
 	end
@@ -16,6 +17,7 @@ class SvgBuilder
 		@buffer += text
 	end
 
+	#TODO remove camelCase from method names and use ruby style
 	def setFill(color)
 		@fill = color
 	end
@@ -24,8 +26,14 @@ class SvgBuilder
 		@stroke = color
 	end
 
+	def stroke_width=(width)
+		raise "Width must be positive" if width <= 0
+		@stroke_width = width
+	end
+
 	private def createStyleAttrs
-		return "stroke=\"#{@stroke}\" fill=\"#{@fill}\""
+		return "stroke=\"#{@stroke}\" fill=\"#{@fill}\" " +
+		       "stroke-width=\"#{@stroke_width}\""
 	end
 
 	def addRect(x, y, w, h)
@@ -123,6 +131,7 @@ class Chart
 		exportFrame(svg, 640, 480)
 
 		svg.setStroke("#729fcf")
+		svg.stroke_width = 4
 		exportPoints(svg, 640, 480)
 		svg.close
 
