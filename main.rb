@@ -7,12 +7,20 @@ class App < Sinatra::Base
 	  "Hello World!"
 	end
 
-	get '/burndown' do
-	  "Burndown!"
+	get '/:user/' do
+	  "User #{params['user']}!"
 	end
 
-	get '/user-stories' do
-	  "User stories!"
+	get '/:user/:repo/' do
+	  "Repo #{params['user']}/#{params['repo']}!"
+	end
+
+	get '/:user/:repo/burndown' do
+	  "Burndown of #{params['user']}/#{params['repo']}!"
+	end
+
+	get '/:user/:repo/user-stories' do
+	  "User stories of #{params['user']}/#{params['repo']}!"
 	end
 end
 
