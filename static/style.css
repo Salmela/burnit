@@ -1,0 +1,81 @@
+/* TODO use somekind css preprocessor */
+
+html, body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	font-family: sans-serif;
+}
+
+.clearfix {
+	clear: both;
+}
+
+#wrap {
+	min-height: 100%;
+	overflow: auto; /* is this needed? */
+}
+
+#header {
+	background: #ef2929;
+	color: #fcd4d4;
+}
+
+#header h1 {
+	margin: 0;
+	padding: 8px;
+	font-family: serif;
+}
+
+#page {
+	margin: 10px;
+}
+
+#footer {
+	background: #888a85;
+	width: 100%;
+	height: 3em;
+	margin-top: -3em;
+	position: relative;
+	clear: both;
+}
+
+#footer-links {
+	margin: 0;
+	padding: 0;
+}
+
+#footer-links li {
+	display: inline-block;
+	list-style: none;
+	padding: 10px;
+}
+
+#footer a {
+	color: #fff;
+	text-decoration: none;
+}
+
+#footer a:hover {
+	text-decoration: underline;
+}
+
+/* use non-fixed height footer if flex layouts are supported */
+@supports (display: flex) {
+	body {
+		display: flex;
+		min-height: 100%;
+		flex-direction: column;
+	}
+
+	#wrap {
+		min-height: auto;
+		flex: 1;
+	}
+
+	#footer {
+		width: auto;
+		height: auto;
+		position: static;
+	}
+}
