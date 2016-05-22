@@ -1,8 +1,9 @@
 require 'net/http'
 require 'json'
+require 'uri'
 
 class GithubApi
-	@@instance = GithubApi.new
+	@@instance = nil
 	attr_reader :user, :repo
 
 	def initialize(user, repo)
@@ -12,12 +13,20 @@ class GithubApi
 		startSession
 	end
 
+	def GithubApi.get_default
+		if !@@instance
+			@@instance = GithubApi.new(nil, nil)
+		end
+		@@instance
+	end
+
 	def startSession()
 		@http = Net::HTTP.new("api.github.com", 443)
 		@http.use_ssl = true
 	end
 
 	def load(uri, limit = 3)
+		raise ArgumentError unless uri.is_a?(URI)
 		raise ArgumentError, 'Too many HTTP redirects' if limit == 0
 		raise 'We are rate limited' if $wait_until != nil
 
