@@ -8,8 +8,21 @@ class App < Sinatra::Base
 
 	set :root, Proc.new { File.join(File.dirname(__FILE__), "../") }
 
+	def search(search_query)
+		array = search_query.split('/')
+		if array.length == 1 or array[1].empty?
+			redirect(to("/#{array[0]}/"))
+		else
+			redirect(to("/#{array[0]}/#{array[1]}/"))
+		end
+	end
+
 	get '/' do
-		erb :index
+		search_query = params['search']
+		if search_query
+			search(search_query)
+		end
+		erb :index_view
 	end
 
 	get '/test' do
