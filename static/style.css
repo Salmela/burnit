@@ -154,6 +154,10 @@ ol.task-list .size:hover {
 	background: #f55959;
 }
 
+h3 {
+	margin-top: 16px;
+}
+
 table.user_stories {
 	border-collapse: collapse;
 	margin: 10px;
