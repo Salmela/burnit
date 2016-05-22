@@ -19,14 +19,14 @@
 <h3>User stories</h3>
 <table class="user_stories">
 <% user_stories.each do |story| %>
-<% story.tasks.each_with_index do |tasks, index| %>
+<% story.tasks.each_with_index do |task, index| %>
 <tr>
 <% if index == 0 %>
 	<td class="story" rowspan="<%= story.tasks.length %>"><%= story.name %></td>
 <% end %>
-	<td><%= story.name %></td>
-	<td><%= story.state %></td>
-	<td><%= story.owner %></td>
+	<td><%= task.name %></td>
+	<td><%= task.state %></td>
+	<td><%= task.owner %></td>
 	<td>2</td>
 	<td>2</td>
 	<td>2</td>
