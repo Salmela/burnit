@@ -2,6 +2,11 @@ require_relative 'github_api'
 require_relative 'test.rb'
 
 module Repo
+	# this should be generated per milestone not by repo
+	def create_repo_burndown_svg
+		content_type("image/svg+xml")
+	end
+
 	def create_repo_page
 		erb :repo_view
 	end

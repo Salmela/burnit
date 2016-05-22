@@ -39,6 +39,15 @@ class App < Sinatra::Base
 		create_repo_page
 	end
 
+	# this should be generated per milestone not by repo
+	get '/:user/:repo/burndown.svg' do
+		create_repo_burndown_svg
+	end
+
+	get '/:user/:repo/badge.svg' do
+		erb "Not implemented yet"
+	end
+
 	get '/:user/:repo/burndown' do
 		create_burndown_page
 	end
