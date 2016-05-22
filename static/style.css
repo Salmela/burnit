@@ -79,6 +79,12 @@ html, body {
 	text-decoration: underline;
 }
 
+#copyright_notice {
+	font-size: .9em;
+	float: right;
+	padding: 10px;
+}
+
 /* use non-fixed height footer if flex layouts are supported */
 @supports (display: flex) {
 	body {
