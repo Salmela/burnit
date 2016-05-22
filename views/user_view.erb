@@ -1,0 +1,13 @@
+<h2>User <%= user %></h2>
+
+<ol class="list">
+<% repos.each do | repo | %>
+<li>
+<a href="/<%= user %>/<%= repo.name %>/">
+<span><%= repo.name %></span>
+<span class="no-css"> - </span>
+<span><%= repo.description %></span>
+</a>
+</li>
+<% end %>
+</ol>

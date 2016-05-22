@@ -17,7 +17,7 @@ class App < Sinatra::Base
 	end
 
 	get '/:user/' do
-		run_user
+		create_user_page
 	end
 
 	get '/:user/:repo/' do
