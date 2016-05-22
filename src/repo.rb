@@ -4,10 +4,6 @@ require_relative 'test.rb'
 class GithubIssue2
 	def initialize(data)
 		@data = data
-		#@url = json['url']
-		#@title = json['title']
-		#@number = json['number']
-		#@labels = json['labels']
 	end
 
 	def name
@@ -18,17 +14,30 @@ class GithubIssue2
 		@data['html_url']
 	end
 
+	private def go_through_labels
+		@labels_fetched = true
+		labels = @data['labels']
+
+		labels.each do |label|
+			next unless label.key?('name')
+			matches = /(\d)h/.match(label['name'].to_s)
+			if matches
+				@size = matches[1]
+			end
+		end
+
+	end
+
 	def size
-		return @size.to_s if @size
-		@size = 2
-		return @size.to_s
+		go_through_labels unless @labels_fetched
+		return @size
 	end
 end
 
 module Repo
 	def fetch_issues(github_api, user, repo)
 		issues = Array.new
-		uri = URI("https://api.github.com/repos/#{user}/#{repo}/issues")
+		uri = URI("https://api.github.com/repos/#{user}/#{repo}/issues?state=all")
 		json_issues = github_api.load(uri)
 
 		@issues = Array.new
