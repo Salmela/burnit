@@ -2,9 +2,11 @@ require 'sinatra'
 require 'sinatra/base'
 
 require_relative 'user'
+require_relative 'repo'
 
 class App < Sinatra::Base
 	include User
+	include Repo
 
 	set :root, Proc.new { File.join(File.dirname(__FILE__), "../") }
 
@@ -34,15 +36,15 @@ class App < Sinatra::Base
 	end
 
 	get '/:user/:repo/' do
-		erb "Repo #{params['user']}/#{params['repo']}!"
+		create_repo_page
 	end
 
 	get '/:user/:repo/burndown' do
-		erb "Burndown of #{params['user']}/#{params['repo']}!"
+		create_burndown_page
 	end
 
 	get '/:user/:repo/user-stories' do
-		erb "User stories of #{params['user']}/#{params['repo']}!"
+		create_user_stories_page
 	end
 
 	set :public_folder, settings.root + '/static'
