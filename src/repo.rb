@@ -16,13 +16,27 @@ class GithubIssue2
 
 	private def go_through_labels
 		@labels_fetched = true
+		@is_user_story = false
 		labels = @data['labels']
 
 		labels.each do |label|
 			next unless label.key?('name')
-			matches = /(\d)h/.match(label['name'].to_s)
+			name = label['name'].to_s;
+			matches = /(\d)h/.match(name)
 			if matches
 				@size = matches[1]
+			end
+
+			reg = Regexp.new("user[ _-]story", Regexp::IGNORECASE)
+			matches = reg.match(name)
+			if matches
+				@is_user_story = true
+			end
+
+			reg = Regexp.new("epic", Regexp::IGNORECASE)
+			matches = reg.match(name)
+			if matches
+				@is_epic = true
 			end
 		end
 
@@ -31,6 +45,16 @@ class GithubIssue2
 	def size
 		go_through_labels unless @labels_fetched
 		return @size
+	end
+
+	def epic?
+		go_through_labels unless @labels_fetched
+		return @is_epic
+	end
+
+	def user_story?
+		go_through_labels unless @labels_fetched
+		return @is_user_story
 	end
 end
 
