@@ -1,6 +1,7 @@
-require "net/http"
-require "json"
-require "date"
+require 'sinatra'
+require 'net/http'
+require 'json'
+require 'date'
 
 class SvgBuilder
 	def initialize(filename, w, h)
@@ -188,8 +189,12 @@ class GithubIssueFetcher
 	end
 end
 
-api = GithubApi.new("octocat", "hello-world")
-fetcher = GithubIssueFetcher.new(api)
+#api = GithubApi.new("octocat", "hello-world")
+#fetcher = GithubIssueFetcher.new(api)
+
+get '/' do
+  "Hello World!"
+end
 
 chart = Chart.new
 chart.add_point(0, 8)
