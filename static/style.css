@@ -1,14 +1,22 @@
 /* TODO use somekind css preprocessor */
 
-html, body {
-	margin: 0;
+* {
 	padding: 0;
+	margin: 0;
+}
+
+html, body {
 	height: 100%;
 	font-family: sans-serif;
 }
 
 .clearfix {
 	clear: both;
+}
+
+/* heh */
+.no-css {
+	display: none;
 }
 
 #wrap {
@@ -78,4 +86,39 @@ html, body {
 		height: auto;
 		position: static;
 	}
+}
+
+h2 {
+	margin: 8px 0;
+}
+
+ol.list {
+	border: 1px solid #888;
+	border-radius: 4px;
+}
+
+ol.list li {
+	list-style: none;
+	border-bottom: 1px solid #888;
+}
+
+ol.list li:last-child {
+	border-bottom: 0;
+}
+
+ol.list a.item {
+	color: #080808;
+	display: block;
+	padding: 8px;
+	text-decoration: none;
+}
+
+ol.list .name {
+	display: inline-block;
+	width: 20%;
+	font-weight: bold;
+}
+
+ol.list .desc {
+	color: #444;
 }

@@ -1,12 +1,13 @@
 <h2>User <%= user %></h2>
 
-<ol class="list">
+<!-- should I just turn these into tables -->
+<ol class="list user-list">
 <% repos.each do | repo | %>
 <li>
-<a href="/<%= user %>/<%= repo.name %>/">
-<span><%= repo.name %></span>
+<a href="/<%= user %>/<%= repo.name %>/" class="item">
+<span class="name"><%= repo.name %></span>
 <span class="no-css"> - </span>
-<span><%= repo.description %></span>
+<span class="desc"><%= repo.description %></span>
 </a>
 </li>
 <% end %>
