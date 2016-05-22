@@ -17,12 +17,12 @@
 </ol>
 
 <h3>User stories</h3>
-<table>
+<table class="user_stories">
 <% user_stories.each do |story| %>
 <% story.tasks.each_with_index do |tasks, index| %>
 <tr>
 <% if index == 0 %>
-	<td rowspan="<%= story.tasks.length %>"><%= story.name %></td>
+	<td class="story" rowspan="<%= story.tasks.length %>"><%= story.name %></td>
 <% end %>
 	<td><%= story.name %></td>
 	<td><%= story.state %></td>
@@ -38,8 +38,8 @@
 <% end %>
 <tr>
 <% if story.tasks.length == 0 %>
-	<td><%= story.name %></td>
-	<td colspan="9">No tasks at this user story.</td>
+	<td class="story"><%= story.name %></td>
+	<td colspan="9" class="no_tasks">No tasks at this user story.</td>
 </tr>
 <% end %>
 <% end %>

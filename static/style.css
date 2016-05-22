@@ -153,3 +153,29 @@ ol.task-list .size {
 ol.task-list .size:hover {
 	background: #f55959;
 }
+
+table.user_stories {
+	border-collapse: collapse;
+	margin: 10px;
+}
+
+table.user_stories td {
+	padding: 4px;
+}
+
+table.user_stories td.no_tasks {
+	color: #888;
+}
+
+table.user_stories tr {
+	border-top: 1px solid #000;
+}
+
+table.user_stories tr:first-child {
+	border-top: none;
+}
+
+table.user_stories td.story {
+	width: 30%;
+	font-style: italic;
+}
