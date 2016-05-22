@@ -1,15 +1,23 @@
 require 'sinatra'
 require 'sinatra/base'
 
+require_relative 'user'
+
 class App < Sinatra::Base
+	include User
+
 	set :root, Proc.new { File.join(File.dirname(__FILE__), "../") }
 
 	get '/' do
 		erb :index
 	end
 
+	get '/test' do
+		erb '<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>'
+	end
+
 	get '/:user/' do
-		erb "User #{params['user']}!"
+		run_user
 	end
 
 	get '/:user/:repo/' do
