@@ -1,4 +1,18 @@
-<h2>Repo <%= params['user'] + "/" + params['repo'] %>!"</h2>
+<h2>Repo <%= user + '/' + repo %>!</h2>
+
+<h3>Tasks</h3>
+<ol class="list task-list">
+<% tasks.each do |task| %>
+<li>
+	<a href="<%= task.url %>" class="item">
+	<span class="name"><%= task.name %></span>
+	<span class="no-css"> - </span>
+	<span class="size"><%= task.size %></span>
+	<span class="clearfix"></span>
+	</a>
+</li>
+<% end %>
+</ol>
 
 <h3>User stories</h3>
 <table>
