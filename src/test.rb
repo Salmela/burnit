@@ -8,7 +8,7 @@ class SvgBuilder
 		@w = w
 		@h = h
 		@file = File.new(filename, "w")
-		@file.puts "<svg>"
+		@file.puts "<svg xmlns=\"http://www.w3.org/2000/svg\">"
 	end
 
 	def setFill(color)
