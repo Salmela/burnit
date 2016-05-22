@@ -96,37 +96,26 @@ class GithubIssue2
 		@parent_ids.push(parent_id)
 
 		if issue_map.key?(parent_id)
-			puts 'parent exists already'
 			issue_map[parent_id].put_task(self)
 			return
 		end
 		if task_map.key?(parent_id)
-			puts 'parent has child list already'
 			list = task_map[parent_id]
 		else
-			puts 'create task list for parent'
 			list = Array.new
 			task_map[parent_id] = list
 		end
 		list.push(self)
-		puts "put myself to parent's task list (#{list.length})"
 	end
 
 	def update_task_map(task_map, issue_map)
-		puts "task map size: " + task_map.size.to_s
-		puts "size: " + @tasks.size.to_s
-
-		puts "map: " + task_map.keys.to_s
-		puts "has key " + task_map.key?(id).to_s
 		@tasks = task_map[id] if task_map.key?(id)
 		# use regexp substitution to go through all of it's matches
 		return unless body
 
 		str = body.gsub(/Task.{1,10}#(\d+)/i) { |match_str|
 			parent = $~[1]
-			puts "task of #{parent} found as #{id}"
 			return '' if parent == self.id
-			puts 'put task'
 			add_task(task_map, issue_map, parent.to_i)
 			''
 		}
@@ -164,7 +153,6 @@ module Repo
 		@issues = Array.new
 		json_issues.each do |data|
 			issue = GithubIssue2.new(data)
-			puts "issue ##{issue.id}"
 			issue.update_task_map(@task_map, @issue_map)
 			@issue_map[issue.id] = issue
 			issues.push(issue)
@@ -192,7 +180,6 @@ module Repo
 
 	def create_repo_page
 		issues = fetch_issues(GithubApi.get_default, params['user'], params['repo'])
-		issues.each{|issue| puts "#{issue.id}; #{issue.tasks.length}"}
 		user_stories = issues.select{|issue| issue.user_story?}
 		user_stories.sort{|story1, story2| \
 			story1.name <=> story2.name}
