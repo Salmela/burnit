@@ -1,4 +1,5 @@
 require_relative 'github_api'
+require_relative 'test.rb'
 
 module Repo
 	def create_repo_page

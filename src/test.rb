@@ -1,4 +1,4 @@
-require_relative 'src/github_api'
+require_relative 'github_api'
 require 'net/http'
 require 'json'
 require 'date'
