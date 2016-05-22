@@ -4,11 +4,15 @@ require 'json'
 require 'date'
 
 class SvgBuilder
-	def initialize(filename, w, h)
+	def initialize(w, h)
 		@w = w
 		@h = h
-		@file = File.new(filename, "w")
-		@file.puts "<svg xmlns=\"http://www.w3.org/2000/svg\">"
+		@buffer = ''
+		append "<svg xmlns=\"http://www.w3.org/2000/svg\">"
+	end
+
+	private def append(text)
+		@buffer += text
 	end
 
 	def setFill(color)
@@ -24,21 +28,32 @@ class SvgBuilder
 	end
 
 	def addRect(x, y, w, h)
-		@file.puts "<rect x=\"#{x}\" y=\"#{y}\" width=\"#{w}\" height=\"#{h}\" #{createStyleAttrs} />"
+		append "<rect x=\"#{x}\" y=\"#{y}\" width=\"#{w}\" height=\"#{h}\" #{createStyleAttrs} />"
 	end
 
 	def addPath(coords, connect_tail)
-		@file.print "<path d=\""
-		@file.print "M "
+		append "<path d=\""
+		append "M "
+
 		coords.each do |coord|
-			@file.print coord[0].to_s + "," + coord[1].to_s + " "
+			append "#{coord[0].to_s},#{coord[1].to_s} "
 		end
-		@file.print "z" if connect_tail
-		@file.print "\" #{createStyleAttrs} />\n"
+		append "z" if connect_tail
+		append "\" #{createStyleAttrs} />\n"
 	end
 
 	def close
-		@file.puts "</svg>"
+		append "</svg>"
+	end
+
+	def save_to_file(filename)
+		File.open(filename, 'w') do |f|
+			f.write(@buffer)
+		end
+	end
+
+	def to_s
+		@buffer
 	end
 end
 
@@ -99,8 +114,8 @@ class Chart
 		end
 	end
 
-	def export
-		svg = SvgBuilder.new("test.svg", 100, 80)
+	def generateSvg
+		svg = SvgBuilder.new(100, 80)
 		svg.setFill("none")
 
 		svg.setStroke("#d8d8d8")
@@ -109,6 +124,16 @@ class Chart
 		svg.setStroke("#729fcf")
 		exportPoints(svg, 98, 78)
 		svg.close
+
+		return svg
+	end
+
+	def svg_buffer
+		generateSvg.to_s
+	end
+
+	def export
+		generateSvg.save_to_file("test.svg")
 	end
 end
 
@@ -146,11 +171,11 @@ end
 #api = GithubApi.new("octocat", "hello-world")
 #fetcher = GithubIssueFetcher.new(api)
 
-chart = Chart.new
-chart.add_point(0, 8)
-chart.add_point(0.5, 7)
-chart.add_point(1, 3)
-chart.add_point(2, 4)
-chart.add_point(3, 1)
-chart.add_point(4, 0)
-chart.export
+#chart = Chart.new
+#chart.add_point(0, 8)
+#chart.add_point(0.5, 7)
+#chart.add_point(1, 3)
+#chart.add_point(2, 4)
+#chart.add_point(3, 1)
+#chart.add_point(4, 0)
+#chart.export
