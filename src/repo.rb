@@ -120,6 +120,8 @@ class GithubIssue2
 		puts "has key " + task_map.key?(id).to_s
 		@tasks = task_map[id] if task_map.key?(id)
 		# use regexp substitution to go through all of it's matches
+		return unless body
+
 		str = body.gsub(/Task.{1,10}#(\d+)/i) { |match_str|
 			parent = $~[1]
 			puts "task of #{parent} found as #{id}"
@@ -157,6 +159,7 @@ module Repo
 		issues = Array.new
 		uri = URI("https://api.github.com/repos/#{user}/#{repo}/issues?state=all")
 		json_issues = github_api.load(uri)
+		return Array.new unless json_issues
 
 		@issues = Array.new
 		json_issues.each do |data|
