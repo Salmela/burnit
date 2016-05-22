@@ -8,7 +8,8 @@ class SvgBuilder
 		@w = w
 		@h = h
 		@buffer = ''
-		append "<svg xmlns=\"http://www.w3.org/2000/svg\">"
+		append "<svg xmlns=\"http://www.w3.org/2000/svg\" " +
+			"width=\"#{w}\" height=\"#{h}\">"
 	end
 
 	private def append(text)
@@ -115,14 +116,14 @@ class Chart
 	end
 
 	def generateSvg
-		svg = SvgBuilder.new(100, 80)
+		svg = SvgBuilder.new(640, 480)
 		svg.setFill("none")
 
 		svg.setStroke("#d8d8d8")
-		exportFrame(svg, 98, 78)
+		exportFrame(svg, 640, 480)
 
 		svg.setStroke("#729fcf")
-		exportPoints(svg, 98, 78)
+		exportPoints(svg, 640, 480)
 		svg.close
 
 		return svg
