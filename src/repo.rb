@@ -25,21 +25,13 @@ class GithubIssue2
 		@parent_ids = Array.new
 	end
 
-	def name
-		@data['title']
-	end
+	def name; @data['title'] end
 
-	def id
-		@data['number']
-	end
+	def id; @data['number'] end
 
-	def url
-		@data['html_url']
-	end
+	def url; @data['html_url'] end
 
-	def body
-		@data['body']
-	end
+	def body; @data['body'] end
 
 	def state
 		case @data['state']
