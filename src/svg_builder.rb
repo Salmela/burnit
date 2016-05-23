@@ -27,12 +27,11 @@ class SvgBuilder
 		@buffer += text
 	end
 
-	#TODO remove camelCase from method names and use ruby style
-	def setFill(color)
+	def fill=(color)
 		@fill = color
 	end
 
-	def setStroke(color)
+	def stroke=(color)
 		@stroke = color
 	end
 
@@ -41,16 +40,17 @@ class SvgBuilder
 		@stroke_width = width
 	end
 
-	private def createStyleAttrs
+	private def create_style_attrs
 		return "stroke=\"#{@stroke}\" fill=\"#{@fill}\" " +
 		       "stroke-width=\"#{@stroke_width}\""
 	end
 
-	def addRect(x, y, w, h)
-		append "<rect x=\"#{x}\" y=\"#{y}\" width=\"#{w}\" height=\"#{h}\" #{createStyleAttrs} />"
+	def add_rect(x, y, w, h)
+		append "<rect x=\"#{x}\" y=\"#{y}\" width=\"#{w}\" "
+		       "height=\"#{h}\" #{create_style_attrs} />"
 	end
 
-	def addPath(coords, connect_tail)
+	def add_path(coords, connect_tail)
 		append "<path d=\""
 		append "M "
 
@@ -58,7 +58,7 @@ class SvgBuilder
 			append "#{coord[0].to_s},#{coord[1].to_s} "
 		end
 		append "z" if connect_tail
-		append "\" #{createStyleAttrs} />\n"
+		append "\" #{create_style_attrs} />\n"
 	end
 
 	def close

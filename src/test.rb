@@ -49,51 +49,51 @@ class Chart
 		h / @max_value.to_f;
 	end
 
-	private def exportPoints(svg, w, h)
+	private def export_points(svg, w, h)
 		points = Array.new
 
 		@data.each_with_index do |point|
 			points.push([point[0] * w_piece(w),
 			             h - point[1] * h_piece(h)])
 		end
-		svg.addPath(points, false)
+		svg.add_path(points, false)
 	end
 
-	private def exportFrame(svg, w, h)
+	private def export_frame(svg, w, h)
 		points = Array.new()
 
 		(1..(@max_value - 1)).each do |i|
 			y = h_piece(h) * i
 			points[0] = [1, y]
 			points[1] = [w - 1, y]
-			svg.addPath(points, false)
+			svg.add_path(points, false)
 		end
 
 		(1..(@width - 1)).each do |i|
 			x = w_piece(w) * i
 			points[0] = [x, 1]
 			points[1] = [x, h - 1]
-			svg.addPath(points, false)
+			svg.add_path(points, false)
 		end
 	end
 
-	def generateSvg
+	def generate_svg
 		svg = SvgBuilder.new(640, 480)
-		svg.setFill("none")
+		svg.fill = "none"
 
-		svg.setStroke("#d8d8d8")
-		exportFrame(svg, 640, 480)
+		svg.stroke = "#d8d8d8"
+		export_frame(svg, 640, 480)
 
-		svg.setStroke("#729fcf")
+		svg.stroke = "#729fcf"
 		svg.stroke_width = 4
-		exportPoints(svg, 640, 480)
+		export_points(svg, 640, 480)
 		svg.close
 
 		return svg
 	end
 
 	def svg_buffer
-		generateSvg.to_s
+		generate_svg.to_s
 	end
 
 	def export
