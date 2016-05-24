@@ -88,25 +88,24 @@ module Repo
 		return chart.svg_buffer
 	end
 
-	def create_repo_page
-		init_repo()
-		issues = @repository.issues
-		user_stories = issues.select{|issue| issue.user_story?}
+	def create_burndown_page
+		init_repo
+		erb :chart_view
+	end
+
+	def create_user_stories_page
+		init_repo
+		user_stories = @repository.issues.select{|issue| \
+			issue.user_story?}
 		user_stories.sort{|story1, story2| \
 			story1.name <=> story2.name}
+		erb :stories_view, :locals => {
+			:user_stories => user_stories}
+	end
 
-		erb :repo_view, :locals => {
-			:user_stories => user_stories,
-			:issues => issues,
-			:user => params['user'],
-			:repo => params['repo']}
-	end
-	def create_burndown_page
-		init_repo()
-		erb "Burndown of #{@user}/#{@repo}!"
-	end
-	def create_user_stories_page
-		init_repo()
-		erb "User stories of #{@user}/#{@repo}!"
+	def create_tasks_page
+		init_repo
+		erb :tasks_view, :locals => {
+			:issues => @repository.issues}
 	end
 end

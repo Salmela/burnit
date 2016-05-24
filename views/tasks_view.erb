@@ -1,0 +1,14 @@
+<ol class="list task-list">
+<% issues.each do |task| %>
+<li>
+	<a href="<%= task.url %>" class="item">
+	<span class="name"><%= task.name %></span>
+	<span class="no-css"> - </span>
+<% if task.size %>
+	<span class="size"><%= task.size %></span>
+<% end %>
+	<span class="clearfix"></span>
+	</a>
+</li>
+<% end %>
+</ol>

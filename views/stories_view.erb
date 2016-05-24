@@ -1,22 +1,3 @@
-<h2>Repo <%= user + '/' + repo %>!</h2>
-
-<h3>Tasks</h3>
-<ol class="list task-list">
-<% issues.each do |task| %>
-<li>
-	<a href="<%= task.url %>" class="item">
-	<span class="name"><%= task.name %></span>
-	<span class="no-css"> - </span>
-<% if task.size %>
-	<span class="size"><%= task.size %></span>
-<% end %>
-	<span class="clearfix"></span>
-	</a>
-</li>
-<% end %>
-</ol>
-
-<h3>User stories</h3>
 <table class="user_stories">
 <% user_stories.each do |story| %>
 <% story.tasks.each_with_index do |task, index| %>
@@ -45,6 +26,3 @@
 <% end %>
 <% end %>
 </table>
-
-<h3>Burndown chart (WIP)</h3>
-<img src="./burndown.svg" />

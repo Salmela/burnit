@@ -46,10 +46,6 @@ class App < Sinatra::Base
 		create_user_page
 	end
 
-	get '/:user/:repo/' do
-		create_repo_page
-	end
-
 	# this should be generated per milestone not by repo
 	get '/:user/:repo/burndown.svg' do
 		content_type("image/svg+xml")
@@ -60,12 +56,16 @@ class App < Sinatra::Base
 		erb "Not implemented yet"
 	end
 
-	get '/:user/:repo/burndown' do
+	get '/:user/:repo/' do
 		create_burndown_page
 	end
 
 	get '/:user/:repo/user-stories' do
 		create_user_stories_page
+	end
+
+	get '/:user/:repo/tasks' do
+		create_tasks_page
 	end
 
 	set :public_folder, settings.root + '/static'
