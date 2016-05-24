@@ -46,8 +46,7 @@ class App < Sinatra::Base
 		create_user_page
 	end
 
-	get '/:user/:repo/?' do
-
+	get '/:user/:repo/' do
 		create_repo_page
 	end
 
