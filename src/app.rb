@@ -42,15 +42,12 @@ class App < Sinatra::Base
 		erb :index_view
 	end
 
-	get '/test' do
-		erb '<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>'
-	end
-
 	get '/:user/' do
 		create_user_page
 	end
 
-	get '/:user/:repo/' do
+	get '/:user/:repo/?' do
+
 		create_repo_page
 	end
 
