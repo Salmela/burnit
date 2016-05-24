@@ -17,6 +17,9 @@ require 'net/http'
 require 'json'
 require 'uri'
 
+#TODO the rate-limit is user specific as far as I know
+$wait_until = nil
+
 class GithubApi
 	@@instance = nil
 	attr_reader :user, :repo

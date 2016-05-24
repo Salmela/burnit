@@ -101,14 +101,7 @@ class Chart
 	end
 end
 
-#TODO the rate-limit is user specific as far as know
-$wait_until = nil
-
-#chart = Chart.new
-#chart.add_point(0, 8)
-#chart.add_point(0.5, 7)
-#chart.add_point(1, 3)
-#chart.add_point(2, 4)
-#chart.add_point(3, 1)
-#chart.add_point(4, 0)
-#chart.export
+class ChartByTime < Chart
+	def intialize(start_time, end_time)
+	end
+end

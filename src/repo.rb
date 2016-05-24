@@ -15,7 +15,7 @@
 
 require_relative 'github_api'
 require_relative 'github_issue'
-require_relative 'test'
+require_relative 'chart'
 
 class GithubMilestone
 	attr_reader :repository
