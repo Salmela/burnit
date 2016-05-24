@@ -17,10 +17,24 @@ require_relative 'github_api'
 require_relative 'github_issue'
 require_relative 'test'
 
+class GithubMilestone
+	attr_reader :repository
+
+	def initialize(repo, data)
+		@repository = repo
+		@data = data
+	end
+
+	def name; @data['title'] end
+	def start_time; Time.iso8601(@data['created_at']) end
+	def end_time; Time.iso8601(@data['due_on']) end
+end
+
 class GithubRepository
 	@issue_map = nil
 	@task_map = nil
 	@issues = nil
+	@milestones = nil
 
 	attr_reader :issues
 
@@ -28,6 +42,7 @@ class GithubRepository
 		@user = user
 		@name = repo
 		@issues = fetch_issues(GithubApi.get_default, user, repo)
+		fetch_milestones(GithubApi.get_default, user, repo)
 	end
 
 	def fetch_issues(github_api, user, repo)
@@ -47,11 +62,23 @@ class GithubRepository
 			issues.push(issue)
 		end
 
-		puts " issue map: " + @issue_map.keys.to_s
-		puts " task map: " + @task_map.keys.to_s
 		@task_map = nil
 
 		return issues
+	end
+
+	def fetch_milestones(github_api, user, repo)
+		@milestones = Array.new
+
+		uri = URI("https://api.github.com/repos/#{user}/#{repo}/milestones?state=all")
+		json_milestones = github_api.load(uri)
+		return Array.new unless json_milestones
+
+		@milestones = Array.new
+		json_milestones.each do |data|
+			milestone = GithubMilestone.new(self, data)
+			@milestones.push(milestone)
+		end
 	end
 end
 
@@ -77,6 +104,8 @@ module Repo
 
 	# this should be generated per milestone not by repo
 	def create_repo_burndown_svg
+		init_repo
+
 		chart = Chart.new
 		chart.add_point(0, 8)
 		chart.add_point(0.5, 7)
