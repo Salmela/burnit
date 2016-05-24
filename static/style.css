@@ -63,6 +63,11 @@ html, body {
 	float: left;
 }
 
+#h-links a:hover {
+	/* we use border-bottom so that the line is little bit lower */
+	border-bottom: 1px solid;
+}
+
 a#sign-in {
 	color: #900000;
 	background: #ffb83a;
@@ -71,6 +76,11 @@ a#sign-in {
 	padding: 0 8px;
 	margin: 8px;
 	float: right;
+	transition: background-color .1s;
+}
+
+a#sign-in:hover {
+	background: #fcc665;
 }
 
 #page {
