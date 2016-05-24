@@ -10,11 +10,13 @@
 
 <div id="header">
 <h1><a href="/">Burnit.io</a></h1>
+<% if defined? links %>
 <ol id="h-links">
 	<li><a href="./">Burndown</a></li>
 	<li><a href="./tasks">Tasks</a></li>
 	<li><a href="./user-stories">User-stories</a></li>
 </ol>
+<% end %>
 <a id="sign-in" href="/">Sign in with Github</a>
 <div class="clearfix"></div>
 </div>

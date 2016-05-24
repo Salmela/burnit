@@ -90,7 +90,8 @@ module Repo
 
 	def create_burndown_page
 		init_repo
-		erb :chart_view
+		erb :chart_view, :locals => {
+			:links => true}
 	end
 
 	def create_user_stories_page
@@ -100,12 +101,14 @@ module Repo
 		user_stories.sort{|story1, story2| \
 			story1.name <=> story2.name}
 		erb :stories_view, :locals => {
-			:user_stories => user_stories}
+			:user_stories => user_stories,
+			:links => true}
 	end
 
 	def create_tasks_page
 		init_repo
 		erb :tasks_view, :locals => {
-			:issues => @repository.issues}
+			:issues => @repository.issues,
+			:links => true}
 	end
 end
