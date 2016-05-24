@@ -17,9 +17,18 @@ require_relative 'github_api'
 require_relative 'github_issue'
 require_relative 'test'
 
-module Repo
+class GithubRepository
 	@issue_map = nil
 	@task_map = nil
+	@issues = nil
+
+	attr_reader :issues
+
+	def initialize(user, repo)
+		@user = user
+		@name = repo
+		@issues = fetch_issues(GithubApi.get_default, user, repo)
+	end
 
 	def fetch_issues(github_api, user, repo)
 		@issue_map = Hash.new unless @issue_map
@@ -44,6 +53,27 @@ module Repo
 
 		return issues
 	end
+end
+
+module Repo
+	@@repos = nil
+
+	def init_repo
+		@user = params['user']
+		@repo = params['repo']
+		@repository = load_repo(@user, @repo)
+	end
+
+	def load_repo(user, repo)
+		id = user + "/" + repo
+		@@repos = Hash.new unless @@repos
+		return @@repos[id] if @@repos.key?(id)
+
+		repo = GithubRepository.new(user, repo)
+		@@repos[id] = repo
+
+		return repo
+	end
 
 	# this should be generated per milestone not by repo
 	def create_repo_burndown_svg
@@ -59,7 +89,8 @@ module Repo
 	end
 
 	def create_repo_page
-		issues = fetch_issues(GithubApi.get_default, params['user'], params['repo'])
+		init_repo()
+		issues = @repository.issues
 		user_stories = issues.select{|issue| issue.user_story?}
 		user_stories.sort{|story1, story2| \
 			story1.name <=> story2.name}
@@ -71,9 +102,11 @@ module Repo
 			:repo => params['repo']}
 	end
 	def create_burndown_page
-		erb "Burndown of #{params['user']}/#{params['repo']}!"
+		init_repo()
+		erb "Burndown of #{@user}/#{@repo}!"
 	end
 	def create_user_stories_page
-		erb "User stories of #{params['user']}/#{params['repo']}!"
+		init_repo()
+		erb "User stories of #{@user}/#{@repo}!"
 	end
 end
