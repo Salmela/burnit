@@ -30,20 +30,47 @@ html, body {
 	color: #fcd4d4;
 }
 
+#header a {
+	color: #fcd4d4;
+	text-decoration: none;
+}
+
 #header h1 {
 	margin: 0;
 	padding: 8px;
 	font-family: serif;
+	float: left;
 }
 
 #header h1 a {
-	color: #fcd4d4;
-	text-decoration: none;
 	transition: color .3s;
 }
 
 #header h1 a:hover {
 	color: #fff;
+}
+
+#h-links {
+	font-size: 1.2em;
+	line-height: 2em;
+	padding: 8px;
+	float: left;
+}
+
+#h-links li {
+	list-style: none;
+	margin-right: 8px;
+	float: left;
+}
+
+a#sign-in {
+	color: #900000;
+	background: #ffb83a;
+	border-radius: 4px;
+	line-height: 2em;
+	padding: 0 8px;
+	margin: 8px;
+	float: right;
 }
 
 #page {
