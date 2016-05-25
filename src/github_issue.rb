@@ -31,7 +31,8 @@ class GithubIssue
 	def body; @data['body'] end
 
 	def closed_at
-		 Time.iso8601(@data['closed_at'])
+		return nil unless @data['closed_at']
+		Time.iso8601(@data['closed_at'])
 	end
 
 	def state

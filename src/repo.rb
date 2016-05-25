@@ -36,7 +36,7 @@ class GithubRepository
 	@issues = nil
 	@milestones = nil
 
-	attr_reader :issues
+	attr_reader :issues, :milestones
 
 	def initialize(user, repo)
 		@user = user
@@ -106,21 +106,40 @@ module Repo
 	def create_repo_burndown_svg
 		init_repo
 
-		chart = Chart.new
-		chart.add_point(0, 8)
-		chart.add_point(0.5, 7)
-		chart.add_point(1, 3)
-		chart.add_point(2, 4)
-		chart.add_point(3, 1)
-		chart.add_point(4, 0)
+		milestone = @repository.milestones[0]
+
+		tasks = @repository.issues.select{|issue| \
+			issue.closed_at && issue.size}
+		sum = 0
+		@repository.issues.each{|issue| \
+			next unless !issue.closed_at && issue.size
+			sum += issue.size.to_f
+		}
+		tasks.sort{|task1, task2| \
+			task1.closed_at <=> task2.closed_at}
+
+		chart = ChartByTime.new(milestone.start_time,
+		                        milestone.end_time)
+
+		tasks.each{|task| sum += task.size.to_f}
+
+		chart.add_data(milestone.start_time, sum)
+		puts "sum: " + sum.to_s
+		tasks.each do |task|
+			sum -= task.size.to_f
+			puts "task " + sum.to_s
+			chart.add_data(task.closed_at, sum)
+		end
 
 		return chart.svg_buffer
 	end
 
 	def create_burndown_page
 		init_repo
+		milestone = @repository.milestones[0]
 		erb :chart_view, :locals => {
-			:links => true}
+			:links => true,
+			:milestone => milestone}
 	end
 
 	def create_user_stories_page

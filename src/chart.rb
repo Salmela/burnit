@@ -20,16 +20,25 @@ require 'net/http'
 require 'json'
 require 'date'
 
+class Object
+  def is_number?
+    self.is_a?(Fixnum) || self.is_a?(Numeric) || self.is_a?(Float)
+  end
+end
+
 class Chart
-	def initialize
+	def initialize(w)
 		@data = Array.new
 		@max_value = 0
-		@width = 0
+		@width = w
 	end
 
 	def add_point(x, y)
+		raise ArgumentError unless x.is_number?
+		raise ArgumentError unless y.is_number?
+
 		insert_at = @data.index{|p| p[0] > x}
-		@data.insert(insert_at.to_i, [x, y])
+		@data.insert(insert_at.to_i, [x.to_f, y.to_f])
 
 		@width = x if x > @width
 		@max_value = y if y > @max_value
@@ -101,7 +110,43 @@ class Chart
 	end
 end
 
+class Time
+	def ceil(seconds)
+		Time.at((self.to_f / seconds).ceil * seconds).utc
+	end
+	def floor(seconds)
+		Time.at((self.to_f / seconds).floor * seconds).utc
+	end
+end
+
 class ChartByTime < Chart
-	def intialize(start_time, end_time)
+
+	attr_reader :stair_case
+
+	def initialize(start_time, end_time)
+		raise ArgumentError unless start_time.is_a?(Time)
+		raise ArgumentError unless end_time.is_a?(Time)
+
+		@start_time = start_time
+		@end_time = end_time
+
+		compute_roughness
+		@start_time = @start_time.floor(@roughness)
+		@end_time = @end_time.ceil(@roughness)
+		super((@end_time - @start_time).to_f / @roughness)
+	end
+
+	private def compute_roughness()
+		# hard coded as days
+		@roughness = 60 * 60 * 24
+	end
+
+	def add_data(time, data)
+		raise ArgumentError unless time.is_a?(Time)
+		raise ArgumentError unless data.is_number?
+
+		x = ((time - @start_time).to_f /  @roughness)
+		add_point(x.to_f, data.to_f)
+		return
 	end
 end
