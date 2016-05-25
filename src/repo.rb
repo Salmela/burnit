@@ -105,6 +105,7 @@ module Repo
 	# this should be generated per milestone not by repo
 	def create_repo_burndown_svg
 		init_repo
+		return if @repository.milestones.length == 0
 
 		milestone = @repository.milestones[0]
 
@@ -136,7 +137,9 @@ module Repo
 
 	def create_burndown_page
 		init_repo
-		milestone = @repository.milestones[0]
+		if @repository.milestones.length > 0
+			milestone = @repository.milestones[0]
+		end
 		erb :chart_view, :locals => {
 			:links => true,
 			:milestone => milestone}
