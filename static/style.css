@@ -226,3 +226,7 @@ table.user_stories td.story {
 	width: 30%;
 	font-style: italic;
 }
+
+#burndown-chart {
+	width: 100%;
+}
