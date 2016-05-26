@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="<%= widths[0]+widths[1] %>" height="18">
+  <linearGradient id="smooth" x2="0" y2="100%">
+    <stop offset="0"  stop-color="#fff" stop-opacity=".7"/>
+    <stop offset=".1" stop-color="#aaa" stop-opacity=".1"/>
+    <stop offset=".9" stop-color="#000" stop-opacity=".3"/>
+    <stop offset="1"  stop-color="#000" stop-opacity=".5"/>
+  </linearGradient>
+  <rect rx="4" width="<%= widths[0]+widths[1] %>" height="18" fill="<%= colorA %>"/>
+  <rect rx="4" x="<%= widths[0] %>" width="<%= widths[1] %>" height="18" fill="<%= colorB %>"/>
+  <rect x="<%= widths[0] %>" width="4" height="18" fill="<%= colorB %>"/>
+  <rect rx="4" width="<%= widths[0]+widths[1] %>" height="18" fill="url(#smooth)"/>
+  <g fill="#fff" text-anchor="middle" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11">
+    <text x="<%= widths[0]/2+1 %>" y="13" fill="#010101" fill-opacity=".3"><%= texts[0] %></text>
+    <text x="<%= widths[0]/2+1 %>" y="12"><%= texts[0] %></text>
+    <text x="<%= widths[0]+widths[1]/2-1 %>" y="13" fill="#010101" fill-opacity=".3"><%= texts[1] %></text>
+    <text x="<%= widths[0]+widths[1]/2-1 %>" y="12"><%= texts[1] %></text>
+  </g>
+</svg>
+
