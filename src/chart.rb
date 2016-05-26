@@ -146,6 +146,7 @@ class ChartByTime < Chart
 		raise ArgumentError unless data.is_number?
 
 		x = ((time - @start_time).to_f /  @roughness)
+
 		add_point(x.to_f, data.to_f)
 		return
 	end

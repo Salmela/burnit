@@ -117,7 +117,7 @@ module Repo
 			next unless !issue.closed_at && issue.size
 			sum += issue.size.to_f
 		}
-		tasks.sort{|task1, task2| \
+		tasks = tasks.sort{|task1, task2| \
 			task1.closed_at <=> task2.closed_at}
 
 		chart = ChartByTime.new(milestone.start_time,
