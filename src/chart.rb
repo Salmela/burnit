@@ -120,8 +120,7 @@ class Time
 end
 
 class ChartByTime < Chart
-
-	attr_reader :stair_case
+	attr_accessor :stair_case
 
 	def initialize(start_time, end_time)
 		raise ArgumentError unless start_time.is_a?(Time)
@@ -147,7 +146,12 @@ class ChartByTime < Chart
 
 		x = ((time - @start_time).to_f /  @roughness)
 
+		#TODO move this to Chart class
+		if @stair_case && @prev_value
+			add_point(x, @prev_value)
+		end
 		add_point(x.to_f, data.to_f)
+		@prev_value = data.to_f
 		return
 	end
 end

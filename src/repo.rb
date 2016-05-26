@@ -123,6 +123,10 @@ module Repo
 		chart = ChartByTime.new(milestone.start_time,
 		                        milestone.end_time)
 
+		if params['stair_case'] == 'true'
+			chart.stair_case = true
+		end
+
 		tasks.each{|task| sum += task.size.to_f}
 
 		chart.add_data(milestone.start_time, sum)
