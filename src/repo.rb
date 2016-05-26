@@ -16,6 +16,7 @@
 require_relative 'github_api'
 require_relative 'github_issue'
 require_relative 'chart'
+require_relative 'shield'
 
 class GithubMilestone
 	attr_reader :repository
@@ -133,6 +134,12 @@ module Repo
 		end
 
 		return chart.svg_buffer
+	end
+
+	def create_repo_badge
+		shield = Shield.new("Burn-rate", "10%")
+		erb shield.file, :layout => false,
+			:locals => shield.locals
 	end
 
 	def create_burndown_page

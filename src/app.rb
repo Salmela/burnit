@@ -52,7 +52,8 @@ class App < Sinatra::Base
 	end
 
 	get '/:user/:repo/badge.svg' do
-		erb "Not implemented yet"
+		content_type("image/svg+xml")
+		create_repo_badge
 	end
 
 	get '/:user/:repo/' do
