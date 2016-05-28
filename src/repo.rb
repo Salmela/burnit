@@ -129,13 +129,14 @@ module Repo
 		milestone = milestone_find(params['milestone'])
 		return unless milestone
 
-		tasks = @repository.issues.select{|issue| \
-			issue.closed_at && issue.size}
+		tasks = @repository.issues.select do |issue|
+			issue.closed_at && issue.size
+		end
 		sum = 0
-		@repository.issues.each{|issue| \
+		@repository.issues.each do |issue|
 			next unless !issue.closed_at && issue.size
 			sum += issue.size.to_f
-		}
+		end
 		tasks = tasks.sort{|task1, task2| \
 			task1.closed_at <=> task2.closed_at}
 
