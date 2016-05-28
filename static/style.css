@@ -30,9 +30,18 @@ html, body {
 	color: #fcd4d4;
 }
 
+a {
+	text-decoration: none;
+}
+
+#page p a:hover,
+#footer a:hover {
+	text-decoration: underline;
+}
+
 #header a {
 	color: #fcd4d4;
-	text-decoration: none;
+	transition: color .3s;
 }
 
 #header h1 {
@@ -40,10 +49,6 @@ html, body {
 	padding: 8px;
 	font-family: serif;
 	float: left;
-}
-
-#header h1 a {
-	transition: color .3s;
 }
 
 #header h1 a:hover {
@@ -109,11 +114,6 @@ a#sign-in:hover {
 
 #footer a {
 	color: #fff;
-	text-decoration: none;
-}
-
-#footer a:hover {
-	text-decoration: underline;
 }
 
 #copyright_notice {
@@ -194,7 +194,6 @@ ol.list a.item {
 	color: #080808;
 	display: block;
 	padding: 8px;
-	text-decoration: none;
 }
 
 ol.user-list .name {
