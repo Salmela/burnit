@@ -173,4 +173,7 @@ module Repo
 			:issues => @repository.issues,
 			:links => true}
 	end
+
+	def create_log_page
+	end
 end

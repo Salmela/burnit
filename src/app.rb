@@ -68,6 +68,10 @@ class App < Sinatra::Base
 		create_tasks_page
 	end
 
+	get '/:user/:repo/log' do
+		create_log_page
+	end
+
 	set :public_folder, settings.root + '/static'
 
 	not_found do
