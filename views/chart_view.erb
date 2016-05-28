@@ -1,6 +1,17 @@
 <% if milestone %>
 <img id="burndown-chart" src="./burndown.svg" />
 <div><%= milestone.name %> <%= milestone.start_time %> <%= milestone.end_time %></div>
-<% else %>
-<div>No milestones on this repository</div>
 <% end %>
+
+<h2>Milestones</h2>
+<ol class="list task-list">
+<% if !milestones %>
+<li>No milestones</li>
+<% end %>
+
+<% milestones.each do |milestone| %>
+<li>
+	<a href="./?milestone=<%= milestone.name %>" class="item"><%= milestone.name %></a>
+</li>
+<% end %>
+</ol>

@@ -110,12 +110,24 @@ module Repo
 		return repo
 	end
 
+	def milestone_find(name)
+		obj = nil
+		array = @repository.milestones
+		array.each do |milestone|
+			obj = milestone if milestone.name == name
+		end
+
+		return nil if array.length == 0
+		return array[0] unless obj
+		obj
+	end
+
 	# this should be generated per milestone not by repo
 	def create_repo_burndown_svg
 		init_repo
-		return if @repository.milestones.length == 0
 
-		milestone = @repository.milestones[0]
+		milestone = milestone_find(params['milestone'])
+		return unless milestone
 
 		tasks = @repository.issues.select{|issue| \
 			issue.closed_at && issue.size}
@@ -155,12 +167,13 @@ module Repo
 
 	def create_burndown_page
 		init_repo
-		if @repository.milestones.length > 0
-			milestone = @repository.milestones[0]
-		end
+		milestone = milestone_find(params['milestone'])
+		return unless milestone
+
 		erb :chart_view, :locals => {
 			:links => true,
-			:milestone => milestone}
+			:milestone => milestone,
+			:milestones => @repository.milestones}
 	end
 
 	def create_user_stories_page
