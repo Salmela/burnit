@@ -70,7 +70,12 @@ a {
 
 #h-links a:hover {
 	/* we use border-bottom so that the line is little bit lower */
-	border-bottom: 1px solid;
+	border-bottom: 2px solid #f88c8b;
+}
+
+#h-links a.active {
+	/* we use border-bottom so that the line is little bit lower */
+	border-bottom: 2px solid;
 }
 
 a#sign-in {

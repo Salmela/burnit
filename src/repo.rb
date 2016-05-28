@@ -92,6 +92,13 @@ module Repo
 		@repository = load_repo(@user, @repo)
 	end
 
+	def active_page?(path)
+		parts = request.path_info.split('/',  -1)
+		raise Exception if parts.length == 0
+
+		parts[parts.length - 1] == path
+	end
+
 	def load_repo(user, repo)
 		id = user + "/" + repo
 		@@repos = Hash.new unless @@repos
