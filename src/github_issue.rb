@@ -35,6 +35,22 @@ class GithubIssue
 		Time.iso8601(@data['closed_at'])
 	end
 
+	def in_milestone?(milestone)
+		res = false
+		puts name
+		@parent_ids.each do |parent|
+			res = in_milestone?(milestone)
+			puts "parent ", res
+		end
+
+		obj = @data['milestone']
+		return res unless obj || res
+
+		puts "this ", (obj['id'] == milestone.id)
+		obj['id'] == milestone.id
+	end
+
+	#TODO check the labels
 	def state
 		case @data['state']
 		when 'open'
