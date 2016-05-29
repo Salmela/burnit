@@ -27,6 +27,7 @@ class GithubMilestone
 	end
 
 	def name; @data['title'] end
+	def id; @data['id'] end
 	def start_time; Time.iso8601(@data['created_at']) end
 	def end_time; Time.iso8601(@data['due_on']) end
 end
@@ -51,17 +52,21 @@ class GithubRepository
 		@task_map = Hash.new unless @task_map
 		@issues = Array.new
 
-		@issues += fetch_issues_page(github_api)
+		5.times do |i|
+			new = fetch_issues_page(github_api, i)
+			break if new.length == 0
+			@issues += new
+		end
 
 		@task_map = nil
 	end
 
-	def fetch_issues_page(github_api)
+	def fetch_issues_page(github_api, page)
 		issues = Array.new
 		uri = URI(github_api.baseurl(@user, @name) + \
-			"/issues?state=all")
+			"/issues?state=all&page=#{page}")
 		json_issues = github_api.load(uri)
-		return Array.new unless json_issues
+		return issues unless json_issues
 
 		json_issues.each do |data|
 			issue = GithubIssue.new(data)
@@ -136,13 +141,16 @@ module Repo
 		return unless milestone
 
 		tasks = @repository.issues.select do |issue|
-			issue.closed_at && issue.size
+			issue.size && \
+			#	issue.in_milestone?(milestone)
+				true
 		end
 		sum = 0
-		@repository.issues.each do |issue|
-			next unless !issue.closed_at && issue.size
-			sum += issue.size.to_f
+		tasks.each do |task|
+			next if task.closed_at
+			sum += task.size.to_f
 		end
+		tasks = tasks.select { |task| task.closed_at }
 		tasks = tasks.sort{|task1, task2| \
 			task1.closed_at <=> task2.closed_at}
 
@@ -156,10 +164,11 @@ module Repo
 		tasks.each{|task| sum += task.size.to_f}
 
 		chart.add_data(milestone.start_time, sum)
-		puts "sum: " + sum.to_s
+		#puts "sum: " + sum.to_s
 		tasks.each do |task|
 			sum -= task.size.to_f
-			puts "task " + sum.to_s
+			#puts "task #{task.name}: " + sum.to_s
+			#puts "milestone ", task.in_milestone?(milestone)
 			chart.add_data(task.closed_at, sum)
 		end
 
