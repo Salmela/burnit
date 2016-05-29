@@ -31,6 +31,10 @@ class GithubApi
 		startSession
 	end
 
+	def baseurl(user, repo)
+		"https://api.github.com/repos/#{user}/#{repo}"
+	end
+
 	def GithubApi.get_default
 		if !@@instance
 			@@instance = GithubApi.new(nil, nil)

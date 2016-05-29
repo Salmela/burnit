@@ -42,20 +42,27 @@ class GithubRepository
 	def initialize(user, repo)
 		@user = user
 		@name = repo
-		@issues = fetch_issues(GithubApi.get_default, user, repo)
-		fetch_milestones(GithubApi.get_default, user, repo)
+		fetch_issues(GithubApi.get_default)
+		fetch_milestones(GithubApi.get_default)
 	end
 
-	def fetch_issues(github_api, user, repo)
+	def fetch_issues(github_api)
 		@issue_map = Hash.new unless @issue_map
 		@task_map = Hash.new unless @task_map
+		@issues = Array.new
 
+		@issues += fetch_issues_page(github_api)
+
+		@task_map = nil
+	end
+
+	def fetch_issues_page(github_api)
 		issues = Array.new
-		uri = URI("https://api.github.com/repos/#{user}/#{repo}/issues?state=all")
+		uri = URI(github_api.baseurl(@user, @name) + \
+			"/issues?state=all")
 		json_issues = github_api.load(uri)
 		return Array.new unless json_issues
 
-		@issues = Array.new
 		json_issues.each do |data|
 			issue = GithubIssue.new(data)
 			issue.update_task_map(@task_map, @issue_map)
@@ -63,15 +70,14 @@ class GithubRepository
 			issues.push(issue)
 		end
 
-		@task_map = nil
-
 		return issues
 	end
 
-	def fetch_milestones(github_api, user, repo)
+	def fetch_milestones(github_api)
 		@milestones = Array.new
 
-		uri = URI("https://api.github.com/repos/#{user}/#{repo}/milestones?state=all")
+		uri = URI(github_api.baseurl(@user, @name) + \
+			"/milestones?state=all")
 		json_milestones = github_api.load(uri)
 		return Array.new unless json_milestones
 
