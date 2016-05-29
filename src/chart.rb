@@ -58,6 +58,31 @@ class Chart
 		h / @max_value.to_f;
 	end
 
+	private def export_labels(svg, w, h)
+		str = ""
+		svg.stroke_width = 0
+		svg.fill = "#010101"
+		svg.stroke = "none"
+		svg.text_anchor = "middle"
+		svg.font_size = 11
+		svg.font_family = "DejaVu Sans,Verdana,Geneva,sans-serif"
+		svg.open_group
+		# add style/font reset command to svg_builder
+		svg.text_anchor = nil
+		svg.font_size = nil
+		svg.font_family = nil
+
+		@width.to_i.times.each do |i|
+			x = i * w_piece(w)
+			y = h
+			text = "mo"
+			svg.add_text(x + w_piece(w) / 2, y - 11, text)
+		end
+		svg.close_group
+
+		str += "</g>"
+	end
+
 	private def export_points(svg, w, h)
 		points = Array.new
 
@@ -96,6 +121,7 @@ class Chart
 		svg.stroke = "#729fcf"
 		svg.stroke_width = 4
 		export_points(svg, 640, 480)
+		export_labels(svg, 640, 480)
 		svg.close
 
 		return svg
