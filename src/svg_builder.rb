@@ -14,6 +14,7 @@
 # along with Burnit.  If not, see <http://www.gnu.org/licenses/>.
 
 class SvgBuilder
+	attr_accessor :text_anchor, :font_family, :font_size
 	def initialize(w, h)
 		@w = w
 		@h = h
@@ -36,13 +37,39 @@ class SvgBuilder
 	end
 
 	def stroke_width=(width)
-		raise "Width must be positive" if width <= 0
+		if width <= 0
+			@stroke_width = nil
+			return
+		end
 		@stroke_width = width
 	end
 
 	private def create_style_attrs
 		return "stroke=\"#{@stroke}\" fill=\"#{@fill}\" " +
 		       "stroke-width=\"#{@stroke_width}\""
+	end
+
+	private def create_font_attrs
+		buf = "";
+		buf += "text-anchor=\"#{text_anchor}\" " if text_anchor
+		buf += "font-family=\"#{font_family}\" " if font_family
+		buf += "font-size=\"#{font_size.to_i}\"" if font_size
+		return buf
+	end
+
+	#TODO replace this with add_group method
+	def open_group
+		append "<g #{create_style_attrs} #{create_font_attrs}>"
+	end
+
+	def close_group
+		append "</g>"
+	end
+
+	def add_text(x, y, text)
+		append "<text x=\"#{x}\" y=\"#{y}\" "
+		append "#{create_style_attrs} #{create_font_attrs}"
+		append ">#{text}</text>"
 	end
 
 	def add_rect(x, y, w, h)
