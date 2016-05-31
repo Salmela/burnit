@@ -142,8 +142,7 @@ module Repo
 
 		tasks = @repository.issues.select do |issue|
 			issue.size && \
-			#	issue.in_milestone?(milestone)
-				true
+				issue.in_milestone?(milestone)
 		end
 		sum = 0
 		tasks.each do |task|

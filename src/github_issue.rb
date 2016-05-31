@@ -35,18 +35,17 @@ class GithubIssue
 		Time.iso8601(@data['closed_at'])
 	end
 
-	def in_milestone?(milestone)
+	def in_milestone?(milestone, depth = 3)
 		res = false
-		puts name
+		return res if depth == 0
 		@parent_ids.each do |parent|
-			res = in_milestone?(milestone)
-			puts "parent ", res
+			res = in_milestone?(milestone, depth - 1)
+			#puts ' ' * (4 - depth) + "parent ", res
 		end
 
 		obj = @data['milestone']
 		return res unless obj || res
 
-		puts "this ", (obj['id'] == milestone.id)
 		obj['id'] == milestone.id
 	end
 
