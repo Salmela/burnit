@@ -1,5 +1,5 @@
 <% if milestone %>
-<img id="burndown-chart" src="./burndown.svg" />
+<img id="burndown-chart" src="./burndown.svg?milestone=<%= milestone.name %>" />
 <div><%= milestone.name %> <%= milestone.start_time %> <%= milestone.end_time %></div>
 <% end %>
 
