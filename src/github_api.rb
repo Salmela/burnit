@@ -1,6 +1,4 @@
-# This file is part of Burnit.
-#
-# Foobar is free software: you can redistribute it and/or modify
+# Burnit is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
@@ -50,6 +48,7 @@ class GithubApi
 	def load(uri, limit = 3)
 		raise ArgumentError unless uri.is_a?(URI)
 		raise ArgumentError, 'Too many HTTP redirects' if limit == 0
+		#TODO wait_until is currently not reset ever
 		raise 'We are rate limited' if $wait_until != nil
 
 		req = Net::HTTP::Get.new(uri.request_uri)
