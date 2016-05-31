@@ -40,7 +40,6 @@ class Chart
 		insert_at = @data.index{|p| p[0] > x}
 		@data.insert(insert_at.to_i, [x.to_f, y.to_f])
 
-		@width = x if x > @width
 		@max_value = y if y > @max_value
 	end
 
